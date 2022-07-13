@@ -1,5 +1,5 @@
-const { Comando, MessageEmbed, MessageButton, MessageActionRow, MessageSelectMenu } = require("../../Configbot/index");
-const moment = require("moment");
+const { Comando, MessageEmbed, MessageButton, MessageActionRow } = require("../../Configbot/index");
+const moment = require("moment-timezone");
 require("moment-duration-format");
 
 module.exports = new Comando({
@@ -7,7 +7,7 @@ module.exports = new Comando({
     alias: ["autokick", "auto-expulsion", "autoexpulsion", "auto-expulsión", "autoexpulsión", "auto-pateada", "autopateada"],
     descripcion: "Impide que un usuario entre al servidor cuando este activado este sistema (Expulsión automática).",
     categoria: "Administrador",
-    ejemplo: "$auto-kick [on | off]",
+    ejemplo: "$auto-kick",
     ejecutar: async (client, message, args) => {
         let prefix;
         if (client.db.has(`${message.guild.id}.prefix`)) { prefix = await client.db.get(`${message.guild.id}.prefix`); } else { prefix = "c!"; }
@@ -17,7 +17,7 @@ module.exports = new Comando({
             let e = new MessageEmbed();
             e.setColor(client.colorDefault);
             e.setDescription(`${client.emojiError} ${client.missing_logs_channel}`);
-            client.db.delete(`${message.guild.id}.logs_channel`);
+            await client.db.delete(`${message.guild.id}.logs_channel`);
             return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
         }
 
@@ -28,12 +28,12 @@ module.exports = new Comando({
             return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
         }
 
-        if (client.db.has(`${message.guild.id}.auto_kick`)) {
-            let time = moment_time(message.createdAt).tz("America/Santo_Domingo").format("DD/MM/YYYY, hh:mm:ss")
+        if (await client.db.has(`${message.guild.id}.auto_kick`)) {
+            let time = moment(message.createdAt).tz("America/Santo_Domingo").format("DD/MM/YYYY, hh:mm:ss")
             let auto_kick_off = new MessageEmbed();
             auto_kick_off.setDescription(`${client.emojiSuccess} Sistema de **__auto-kick__** acaba de ser correctamente **__desactivado__**.`);
             auto_kick_off.setColor(client.colorDefault);
-            client.db.delete(`${message.guild.id}.auto_kick`);
+            await client.db.delete(`${message.guild.id}.auto_kick`);
             message.reply({ embeds: [auto_kick_off], allowedMentions: { repliedUser: false } });
             let logs_off_button = new MessageActionRow().addComponents(
                 new MessageButton().setStyle('LINK').setURL(message.url).setLabel(`Ir al mensaje de ${message.author.username}`), );
@@ -56,15 +56,12 @@ module.exports = new Comando({
 \`\`\``,
                 components: [logs_off_button]
             });
-        } else if (!client.db.has(`${message.guild.id}.auto_kick`)) {
-            let time = moment_time(message.createdAt).tz("America/Santo_Domingo").format("DD/MM/YYYY, hh:mm:ss")
+        } else if (!await client.db.has(`${message.guild.id}.auto_kick`)) {
+            let time = moment(message.createdAt).tz("America/Santo_Domingo").format("DD/MM/YYYY, hh:mm:ss")
             let auto_kick_on = new MessageEmbed();
             auto_kick_on.setDescription(`${client.emojiSuccess} Sistema de **__auto-kick__** acaba de ser correctamente **__activado__**.`);
             auto_kick_on.setColor(client.colorDefault);
-            client.db.set(`${message.guild.id}.auto_kick`, {
-                estado: "on",
-                mod: message.author.id
-            });
+            await client.db.set(`${message.guild.id}.auto_kick`, message.author.id);
             message.reply({ embeds: [auto_kick_on], allowedMentions: { repliedUser: false } });
             let logs_on_button = new MessageActionRow().addComponents(
                 new MessageButton().setStyle('LINK').setURL(message.url).setLabel(`Ir al mensaje de ${message.author.username}`), );
@@ -81,8 +78,7 @@ module.exports = new Comando({
 
 * Hora 
 > ${time}
-`
-                `
+
 * Mensaje
 > ${message.url}
 \`\`\``,
