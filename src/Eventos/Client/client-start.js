@@ -37,8 +37,6 @@ module.exports = new Evento({
     client.colorDefault = "#2F3136"
     client.servidor_oficial = "719351217616322602";
     client.servidor_test = "656754930652151808";
-    client.covidAPI = require("../../utilidades/covidAPI.js");
-    client.aosAPI = require('../../utilidades/serverlist.js');
     client.comandosGIF = "https://media.discordapp.net/attachments/694731014110445568/879267024411459584/MOSHED-2021-8-23-3-30-52.gif?width=512&height=128";
     client.adminsGIF = "https://media.discordapp.net/attachments/694731014110445568/879258681684930580/MOSHED-2021-8-23-2-59-21.gif?width=512&height=128";
     client.modsGIF = "https://media.discordapp.net/attachments/694731014110445568/879260619784724490/MOSHED-2021-8-23-3-7-7.gif?width=512&height=128";

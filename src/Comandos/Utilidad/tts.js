@@ -1,5 +1,4 @@
 const { Comando, MessageEmbed, MessageAttachment } = require("../../ConfigBot/index");
-let { Convert } = require('../../utilidades/Convert.js')
 let fs = require('fs').promises, tts = require('google-tts-api'), util = require('util'),
     download = util.promisify(require('download-file'))
 
