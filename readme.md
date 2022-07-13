@@ -2,7 +2,6 @@
 
 - [Servidor de soporte](https://discord.gg/NJjVbSK)
 - [D-ConfigBot | v1.0.4](#d-configbot--v104)
-    - [**D-ConfigBot** es un bot **multifuncional** que cuenta con una cantidad mayor a **60** comandos y **9** categorías. El desarrollador de esta aplicación es **iNahilC.#8180**, A continuación una lista de los comandos que posee **D-ConfigBot** hasta el momento.](#d-configbot-es-un-bot-multifuncional-que-cuenta-con-una-cantidad-mayor-a-60-comandos-y-9-categorías-el-desarrollador-de-esta-aplicación-es-inahilc8180-a-continuación-una-lista-de-los-comandos-que-posee-d-configbot-hasta-el-momento)
   - [Lista de Comandos](#lista-de-comandos)
     - [**Administrador** [10]](#administrador-10)
     - [**Moderador** [13]](#moderador-13)
