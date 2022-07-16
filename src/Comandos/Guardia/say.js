@@ -29,58 +29,6 @@ module.exports = new Comando({
                 e.setDescription('' + client.emojiError + ' Necesitas escribir un mensaje para enviar.')
                 return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } })
             }
-            // if (message.mentions.roles.first()) {
-            //     const si_id = new DiscordUtils().button_id_generator(20);
-            //     const no_id = new DiscordUtils().button_id_generator(20);
-            //     const si_pero_no_mencion = new DiscordUtils().button_id_generator(20);
-            //     // Habilitado ✅
-            //     const button_unlock = new MessageActionRow().addComponents(
-            //     new MessageButton().setEmoji(client.emojiSuccessId).setLabel("Si").setCustomId(si_id).setStyle("SUCCESS"),
-            //     new MessageButton().setEmoji(client.emojiErrorId).setLabel("No").setCustomId(no_id).setStyle("DANGER"),
-            //     new MessageButton().setEmoji(client.warningId).setLabel("Continuar sin mención de rol").setCustomId(si_pero_no_mencion).setStyle("PRIMARY"), );
-            //     // Deshabilitado ❌
-            //     const button_lock = new MessageActionRow().addComponents(
-            //     new MessageButton().setEmoji(client.emojiSuccessId).setLabel("Si").setCustomId(si_id).setStyle("SUCCESS").setDisabled(true),
-            //     new MessageButton().setEmoji(client.emojiErrorId).setLabel("No").setCustomId(no_id).setStyle("DANGER").setDisabled(true),
-            //     new MessageButton().setEmoji(client.warningId).setLabel("Continuar sin mención de rol").setCustomId(si_pero_no_mencion).setStyle("PRIMARY").setDisabled(true), );
-
-            //     let e = new MessageEmbed()
-            //     e.setColor("GREEN");
-            //     e.setDescription(`${client.warning} Se ha detectado mención de rol en el contenido del mensaje, deseas seguir?`);
-            //     let msg = await message.reply({ embeds: [e], allowedMentions: { repliedUser: false }, components: [button_unlock] });
-            //     let msg_filter = x => x.user.id == message.author.id;
-            //     let msg_collector = msg.channel.createMessageComponentCollector({
-            //       msg_filter,
-            //       time: 60000,
-            //       errors: ["time"]
-            //     });
-
-            //   msg_collector.on("collect", async (btn) => {
-            //     switch (btn.customId) {
-            //       case si_id:
-            //           message.channel.send({ content: txt, allowedMentions: { parse: ['users', 'roles'], repliedUser: false } })
-            //           return msg_collector.stop("x");
-            //         break;
-            //       case no_id:
-            //           msg.edit({ embeds: [new MessageEmbed().setColor("GREEN").setDescription(`${client.emojiSuccess} El sistema fue **__correctamente__** detenido.`)], allowedMentions: { repliedUser: false }, components: [] });
-            //           return msg_collector.stop("x");
-            //         break;
-            //       case si_pero_no_mencion:
-            //           message.channel.send({ content: txt, allowedMentions: { parse: ['users'], repliedUser: false } });
-            //           return msg_collector.stop("x");
-            //         break;
-            //     }
-            //   });
-
-            //   msg_collector.on("end", async (reason) => {
-            //     if (reason !== "x") return;
-            //     let e = new MessageEmbed();
-            //     e.setColor("GREEN");
-            //     e.setDescription(`${client.emojiError} Tardaste demasiado en tomar una decisión, inténtalo de nuevo!`);
-            //     return msg.edit({ embeds: [e], allowedMentions: { repliedUser: false } });
-            //   });
-            // }
-
             return message.reply({ content: txt, allowedMentions: { parse: ['users'], repliedUser: false } });
         }
 
