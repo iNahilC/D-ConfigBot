@@ -1,4 +1,4 @@
-const { Comando, MessageEmbed, DiscordUtils, MessageButton, MessageActionRow } = require("../../ConfigBot/index");
+const { Comando, MessageEmbed, MessageButton, MessageActionRow } = require("../../ConfigBot/index");
 
 module.exports = new Comando({
     nombre: "message-filter",
@@ -24,15 +24,15 @@ module.exports = new Comando({
             e.setColor(client.colorDefault)
             e.setDescription(`
 \`\`\`md
-D-ConfigBot [Message Filter]
+# D-ConfigBot [Message Filter]
 
-> ${prefix}message-filter add
+* ${prefix}message-filter add
 > Para agregar una palabra al filtro de mensajes.
 
-> ${prefix}message-filter remove
+* ${prefix}message-filter remove
 > Para remover una palabra al filtro de mensajes.
 
->${prefix}message-filter list
+* ${prefix}message-filter list
 > Para ver la lista de palabras en el filtro de mensajes.
 \`\`\`
 ${client.warning} **__Los usuarios que contengan permisos de moderador o superior no sera afectado por este sistema__**.`);
@@ -58,15 +58,15 @@ ${client.warning} **__Los usuarios que contengan permisos de moderador o superio
             e.setColor(client.colorDefault)
             e.setDescription(`
 \`\`\`md
-D-ConfigBot [Message Filter]
+# D-ConfigBot [Message Filter]
 
-> ${prefix}message-filter add
+* ${prefix}message-filter add
 > Para agregar una palabra al filtro de mensajes.
 
-> ${prefix}message-filter remove
+* ${prefix}message-filter remove
 > Para remover una palabra al filtro de mensajes.
 
->${prefix}message-filter list
+* ${prefix}message-filter list
 > Para ver la lista de palabras en el filtro de mensajes.
 \`\`\`
 ${client.warning} **__Los usuarios que contengan permisos de moderador o superior no sera afectado por este sistema__**.`);
@@ -101,7 +101,8 @@ ${client.warning} **__Los usuarios que contengan permisos de moderador o superio
                 return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
             }
 
-            if (await client.db.get(`${message.guild.id}.msg_filter`).includes(palabra)) {
+            let msgFilterDB = await client.db.get(`${message.guild.id}.msg_filter`);
+            if (msgFilterDB.includes(palabra)) {
                 let e = new MessageEmbed()
                 e.setColor(client.colorDefault)
                 e.setDescription(`${client.emojiError} La palabra **${palabra}** ya se **__encuentra agregada__** a la lista de **__filtros de mensajes__**.`)
@@ -138,7 +139,7 @@ ${client.warning} **__Los usuarios que contengan permisos de moderador o superio
                 let e = new MessageEmbed()
                 e.setColor(client.colorDefault)
                 e.setDescription(`${client.emojiError} Todavía no hay ninguna palabra para **remover** en el sistema de **__filtros de mensajes__**.`);
-                e.setFooter(`Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]`);
+                e.setFooter({ text: `Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]` });
                 return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
             }
 
@@ -149,26 +150,27 @@ ${client.warning} **__Los usuarios que contengan permisos de moderador o superio
                 return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
             }
 
-            if (!await client.db.get(`${message.guild.id}.msg_filter`).includes(rpalabra)) {
+            let msgFilter = await client.db.get(`${message.guild.id}.msg_filter`)
+            if (!msgFilter.includes(rpalabra)) {
                 let es = new MessageEmbed()
                 es.setColor(client.colorDefault)
                 es.setDescription(`${client.emojiError} La palabra **__${rpalabra}__** no está agregada en la lista de filtros.`);
-                es.setFooter(`Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]`);
+                es.setFooter({ text: `Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]`});
                 return message.reply({ embeds: [es], allowedMentions: { repliedUser: false } })
             }
 
-            if (await client.db.get(`${message.guild.id}.msg_filter`).includes(rpalabra)) {
-                let e = new MessageEmbed()
-                e.setColor(client.colorDefault)
-                e.setDescription(`${client.emojiSuccess} La palabra **${rpalabra}** acaba de ser removida del **__filtro de mensajes__**.`)
+            let e = new MessageEmbed()
+            e.setColor(client.colorDefault)
+            e.setDescription(`${client.emojiSuccess} La palabra **${rpalabra}** acaba de ser removida del **__filtro de mensajes__**.`)
 
-                const button_url = new MessageActionRow().addComponents(
-                    new MessageButton().setStyle('LINK').setURL(message.url).setLabel(`Ir al mensaje del moderador ${message.author.username}!`), );
-                message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
+            const button_url = new MessageActionRow().addComponents(
+                new MessageButton().setStyle('LINK').setURL(message.url).setLabel(`Ir al mensaje del moderador ${message.author.username}!`), );
+            message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
+            
 
-                await client.db.pull(`${message.guild.id}.msg_filter`, rpalabra);
-                return lchannel.send({
-                    content: `
+            await client.db.pull(`${message.guild.id}.msg_filter`, rpalabra);
+            return lchannel.send({
+                content: `
 \`\`\`md
 # D-ConfigBot [Message-Filter | Remove]
 
@@ -181,31 +183,31 @@ ${client.warning} **__Los usuarios que contengan permisos de moderador o superio
 * Canal
 > #${message.channel.name}
 \`\`\``,
-                    components: [button_url]
-                });
-            }
+                components: [button_url]
+            });
         } else if (["-list", "-lista", "list", "lista"].includes(args[0].toLowerCase())) {
             if (!await client.db.has(`${message.guild.id}.msg_filter`)) await client.db.set(`${message.guild.id}.msg_filter`, new Array());
-            let array_msgs = await msg_filter.obtener(`${message.guild.id}.msg_filter`);
-            if (array_msgs.length === 0) {
+            let msgFilterChecker = await client.db.get(`${message.guild.id}.msg_filter`);
+            if (msgFilterChecker.length === 0) {
                 let e = new MessageEmbed()
                 e.setColor(client.colorDefault)
                 e.setDescription(`${client.emojiError} Todavía no hay ninguna palabra para **visualizar** en el sistema de **__filtros de mensajes__**.`);
-                e.setFooter(`Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]`);
+                e.setFooter({ text: `Puedes agregar una palabra al filtros de mensajes escribiendo: ${prefix}message-filter add [palabra]`});
                 return message.reply({ embeds: [e], allowedMentions: { repliedUser: false } });
             }
 
-            let msg_filter_array = await client.db.get(`${message.guild.id}.msg_filter`).map((id, key) => [key, id]);
-            if (msg_filter_array) {
+            let msgFilterDB = await client.db.get(`${message.guild.id}.msg_filter`)
+            let msgFilterMAP = msgFilterDB.map((id, key) => [key, id]);
+            if (msgFilterMAP) {
                 let cmdlist = [],
                     index = 1,
                     commands_list_embed = new MessageEmbed();
-                while (msg_filter_array.length > 0) cmdlist.push(msg_filter_array.splice(0, 100).map(u => `* ${index++}- ${u[1]}`));
+                while (msgFilterMAP.length > 0) cmdlist.push(msgFilterMAP.splice(0, 100).map(u => `${index++}- ${u[1]}`));
                 commands_list_embed.setColor(client.colorDefault);
                 commands_list_embed.setDescription(`
 ${client.emojiSuccess} __Lista de las **${cmdlist[0].length}** palabras agregadas al filtro de mensajes.__
 
-\`\`\`md
+\`\`\`
 ${cmdlist[0].join("\n")}
 \`\`\`
 `);
