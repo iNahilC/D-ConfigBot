@@ -45,7 +45,7 @@ class ConfigBot extends Client {
 
         this.start_time = start_time;
         let eventos = cargar_eventos(this.path_eventos)
-        if (!eventos) Log(["morado", "blanco"], "<0>[EVENTO]<1> ^Ningún evento encontrado.")
+        if (!eventos) Console(["morado", "blanco"], "<0>[EVENTO]<1> ^Ningún evento encontrado.")
         else {
             eventos.map(evento => {
                 this.on(evento.nombre, (...args) => evento.ejecutar(this, ...args))
@@ -70,10 +70,6 @@ class ConfigBot extends Client {
 
         this.ejecutar_comando = (nombre = false, ...args) => {
           ejecutar_comando(nombre, this, ...args)
-        }
-
-        this.tiene_cooldown = (nombre, message) => {
-          return tiene_cooldown(nombre, message, Cooldown)
         }
 
         this.recargar_comando = (nombre = false) => {
