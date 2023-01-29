@@ -1,4 +1,4 @@
-# [D-ConfigBot | v1.0.4](https://discord.com/api/oauth2/authorize?client_id=656966356037533713&permissions=1642824465911&scope=bot)
+# [D-ConfigBot | v1.0.4](https://discord.com/api/oauth2/authorize?client_id=656966356037533713&permissions=1642824465911&scope=bot) [BOT OFFLINE]
 
 - [Servidor de soporte](https://discord.gg/NJjVbSK)
 - [D-ConfigBot | v1.0.4](#d-configbot--v104)
